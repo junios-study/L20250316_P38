@@ -11,7 +11,7 @@
 
 
 
-// Sets default values
+// CDO Sets default values
 AMyPawn::AMyPawn()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -43,8 +43,23 @@ AMyPawn::AMyPawn()
 	Movement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
 
 
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_Body(TEXT("/Script/Engine.StaticMesh'/Game/p38/Meshes/SM_P38_Body.SM_P38_Body'"));
+	if (SM_Body.Succeeded())
+	{
+		Body->SetStaticMesh(SM_Body.Object);
+	}
 
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_Propeller(TEXT("/Script/Engine.StaticMesh'/Game/p38/Meshes/SM_P38_Propeller.SM_P38_Propeller'"));
+	if (SM_Propeller.Succeeded())
+	{
+		Left->SetStaticMesh(SM_Propeller.Object);
+		Right->SetStaticMesh(SM_Propeller.Object);
+	}
 
+	Left->SetRelativeLocation(FVector(35.976219f, -20.291702f, 0.970738f));
+	Right->SetRelativeLocation(FVector(35.976219f, 20.291702f, 0.970738f));
+
+	Movement->MaxSpeed = 300.0f;
 
 
 }
@@ -60,6 +75,8 @@ void AMyPawn::BeginPlay()
 void AMyPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	AddMovementInput(GetActorForwardVector());
 
 }
 
