@@ -9,6 +9,7 @@
 #include "GameFramework/FloatingPawnMovement.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h" //important
+#include "MyRocket.h"
 
 
 
@@ -60,7 +61,7 @@ AMyPawn::AMyPawn()
 	Left->SetRelativeLocation(FVector(35.976219f, -20.291702f, 0.970738f));
 	Right->SetRelativeLocation(FVector(35.976219f, 20.291702f, 0.970738f));
 
-	Movement->MaxSpeed = 300.0f;
+	Movement->MaxSpeed = 0;
 
 
 }
@@ -78,6 +79,9 @@ void AMyPawn::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	AddMovementInput(GetActorForwardVector());
+	
+	RotatePropeller(Left);
+	RotatePropeller(Right);
 
 }
 
@@ -89,7 +93,16 @@ void AMyPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis(TEXT("Pitch"), this, &AMyPawn::Pitch);
 	PlayerInputComponent->BindAxis(TEXT("Roll"), this, &AMyPawn::Roll);
 
+	PlayerInputComponent->BindAction(TEXT("Fire"), EInputEvent::IE_Pressed, this, &AMyPawn::Fire);
+
 }
+
+void AMyPawn::Fire()
+{
+	GetWorld()->SpawnActor<AActor>(AMyRocket::StaticClass(),
+		Arrow->K2_GetComponentToWorld());
+}
+
 
 void AMyPawn::Pitch(float Value)
 {
@@ -99,5 +112,10 @@ void AMyPawn::Pitch(float Value)
 void AMyPawn::Roll(float Value)
 {
 	AddActorLocalRotation(FRotator(0, 0, UGameplayStatics::GetWorldDeltaSeconds(GetWorld()) * Value * 90.0f));
+}
+
+void AMyPawn::RotatePropeller(USceneComponent* Where)
+{
+	Where->AddLocalRotation(FRotator(0, 0, UGameplayStatics::GetWorldDeltaSeconds(GetWorld()) * 7200.0f));
 }
 

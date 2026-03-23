@@ -34,6 +34,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void Fire();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UBoxComponent> Box;
@@ -62,5 +63,7 @@ public:
 	void Pitch(float Value);
 
 	void Roll(float Value);
+
+	void RotatePropeller(USceneComponent* Where);
 };
 
