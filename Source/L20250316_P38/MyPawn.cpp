@@ -8,6 +8,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/GameplayStatics.h" //important
 
 
 
@@ -85,5 +86,18 @@ void AMyPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	PlayerInputComponent->BindAxis(TEXT("Pitch"), this, &AMyPawn::Pitch);
+	PlayerInputComponent->BindAxis(TEXT("Roll"), this, &AMyPawn::Roll);
+
+}
+
+void AMyPawn::Pitch(float Value)
+{
+	AddActorLocalRotation(FRotator(UGameplayStatics::GetWorldDeltaSeconds(GetWorld()) * Value * 90.0f, 0, 0));
+}
+
+void AMyPawn::Roll(float Value)
+{
+	AddActorLocalRotation(FRotator(0, 0, UGameplayStatics::GetWorldDeltaSeconds(GetWorld()) * Value * 90.0f));
 }
 

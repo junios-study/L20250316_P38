@@ -58,5 +58,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UFloatingPawnMovement> Movement;
+
+	void Pitch(float Value);
+
+	void Roll(float Value);
 };
 
