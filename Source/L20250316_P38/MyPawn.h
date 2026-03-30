@@ -69,5 +69,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	TSubclassOf<AMyRocket> RocketTemplate;
+	//의미 클래스 이름 기억, CDO의 기본 객체 포인터 이름 대신 사용
 };
 

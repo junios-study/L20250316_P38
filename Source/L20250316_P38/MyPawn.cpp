@@ -64,6 +64,13 @@ AMyPawn::AMyPawn()
 	Movement->MaxSpeed = 0;
 
 
+	static ConstructorHelpers::FClassFinder<AMyRocket> RocketBP(TEXT("/Script/Engine.Blueprint'/Game/Blueprints/CPP/BP_MyRocket.BP_MyRocket_C'"));
+	if (RocketBP.Succeeded())
+	{
+		RocketTemplate = RocketBP.Class;
+	}
+
+
 }
 
 // Called when the game starts or when spawned
@@ -99,7 +106,7 @@ void AMyPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AMyPawn::Fire()
 {
-	GetWorld()->SpawnActor<AActor>(AMyRocket::StaticClass(),
+	GetWorld()->SpawnActor<AActor>(RocketTemplate,
 		Arrow->K2_GetComponentToWorld());
 }
 
