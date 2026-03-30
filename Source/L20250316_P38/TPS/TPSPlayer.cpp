@@ -57,5 +57,8 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 void ATPSPlayer::Move(const FInputActionValue& Value)
 {
+	FVector2D Direction = Value.Get<FVector2D>();
 
+	AddMovementInput(GetActorForwardVector() * Direction.X);
+	AddMovementInput(GetActorRightVector() * Direction.Y);
 }
