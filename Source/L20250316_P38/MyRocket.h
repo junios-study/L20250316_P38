@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -46,4 +46,19 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	TObjectPtr<USoundBase> ExplosionSound;
+
+	//CPP에서 구현하지 않음
+	//BP에서 구현한걸 CPP에서 실행 
+	UFUNCTION(BlueprintImplementableEvent)
+	void CalculateScore(int InScore);
+
+	//기본은 C++구현을 실행도 C++ 실행, BP에서 재정의 할수 있음
+	UFUNCTION(BlueprintNativeEvent)
+	void CalculateScoreWithDefault(int InScore);
+	void CalculateScoreWithDefault_Implementation(int InScore);
+
+	//이건 구현은 CPP, 호출은 BP
+	UFUNCTION(BlueprintCallable, meta=(DisplayName="이건 한글 함수"))
+	void ServerCPPFunction();
+
 };

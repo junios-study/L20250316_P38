@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "MyRocket.h"
@@ -9,7 +9,7 @@
 #include "NiagaraFunctionLibrary.h"
 
 // Sets default values
-//CDO �ʱ�ȭ
+//CDO 초기화
 AMyRocket::AMyRocket()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -53,6 +53,10 @@ void AMyRocket::Tick(float DeltaTime)
 
 void AMyRocket::ProcessActorBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
+
+	UE_LOG(LogTemp, Warning, TEXT("%d %s"), 11, TEXT("Hello"));
+
+
 	if (OtherActor->ActorHasTag(FName(TEXT("Player"))) == false)
 	{
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(
@@ -64,6 +68,20 @@ void AMyRocket::ProcessActorBeginOverlap(AActor* OverlappedActor, AActor* OtherA
 		UGameplayStatics::SpawnSound2D(GetWorld(),
 			ExplosionSound
 		);
+
+		//CalculateScore(100);
+		CalculateScoreWithDefault(200);
 	}
+}
+
+void AMyRocket::CalculateScoreWithDefault_Implementation(int InScore)
+{
+	//기본 구현
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("적으라고 이색휘야"));
+}
+
+void AMyRocket::ServerCPPFunction()
+{
+	UE_LOG(LogTemp, Warning, TEXT("In CPP"));
 }
 
