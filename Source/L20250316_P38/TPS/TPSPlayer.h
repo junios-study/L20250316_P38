@@ -35,6 +35,11 @@ public:
 
 	void Move(const FInputActionValue& Value);
 
+	void Look(const FInputActionValue& Value);
+
+	void Zoom(const FInputActionValue& Value);
+
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UCameraComponent> FollorCamera;
 
@@ -52,4 +57,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> IA_TPSLook;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> IA_TPSZoom;
 };

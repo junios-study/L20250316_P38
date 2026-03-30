@@ -8,6 +8,7 @@
 #include "Components/CapsuleComponent.h"
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -52,6 +53,14 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	if (EIC)
 	{
 		EIC->BindAction(IA_TPSMove, ETriggerEvent::Triggered, this, &ATPSPlayer::Move);
+
+		EIC->BindAction(IA_TPSJump, ETriggerEvent::Triggered, this, &ATPSPlayer::Jump);
+
+		EIC->BindAction(IA_TPSJump, ETriggerEvent::Canceled, this, &ATPSPlayer::StopJumping);
+
+		EIC->BindAction(IA_TPSLook, ETriggerEvent::Triggered, this, &ATPSPlayer::Look);
+
+		EIC->BindAction(IA_TPSZoom, ETriggerEvent::Triggered, this, &ATPSPlayer::Zoom);
 	}
 }
 
@@ -59,6 +68,30 @@ void ATPSPlayer::Move(const FInputActionValue& Value)
 {
 	FVector2D Direction = Value.Get<FVector2D>();
 
-	AddMovementInput(GetActorForwardVector() * Direction.X);
-	AddMovementInput(GetActorRightVector() * Direction.Y);
+
+	FVector NewForwardVector = UKismetMathLibrary::GetForwardVector(FRotator(0, GetControlRotation().Yaw, 0));
+
+	FVector NewRightVector = UKismetMathLibrary::GetRightVector(FRotator(0, GetControlRotation().Yaw, GetControlRotation().Roll));
+
+	AddMovementInput(NewForwardVector * Direction.X);
+	AddMovementInput(NewRightVector * Direction.Y);
+}
+
+void ATPSPlayer::Look(const FInputActionValue& Value)
+{
+	FVector2D Direction = Value.Get<FVector2D>();
+
+	AddControllerPitchInput(Direction.Y);
+	AddControllerYawInput(Direction.X);
+	
+}
+
+void ATPSPlayer::Zoom(const FInputActionValue& Value)
+{
+	float Zoom = Value.Get<float>();
+
+	CameraBoom->TargetArmLength += (Zoom*30.f);
+
+	UKismetMathLibrary::Clamp(CameraBoom->TargetArmLength, 30.0f, 600.0f);
+
 }
