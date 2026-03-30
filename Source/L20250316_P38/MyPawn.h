@@ -12,6 +12,7 @@ class UArrowComponent;
 class UCameraComponent;
 class USpringArmComponent;
 class UFloatingPawnMovement;
+class AMyRocket;
 
 
 UCLASS()
@@ -65,5 +66,8 @@ public:
 	void Roll(float Value);
 
 	void RotatePropeller(USceneComponent* Where);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	TSubclassOf<AMyRocket> RocketTemplate;
 };
 

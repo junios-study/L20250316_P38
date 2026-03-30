@@ -8,8 +8,9 @@ public class L20250316_P38EditorTarget : TargetRules
 	public L20250316_P38EditorTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
-		DefaultBuildSettings = BuildSettingsVersion.V6;
+		DefaultBuildSettings = BuildSettingsVersion.Latest;
+        IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
 
-		ExtraModuleNames.AddRange( new string[] { "L20250316_P38" } );
+        ExtraModuleNames.AddRange( new string[] { "L20250316_P38" } );
 	}
 }

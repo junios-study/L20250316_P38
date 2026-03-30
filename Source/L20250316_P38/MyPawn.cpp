@@ -10,7 +10,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h" //important
 #include "MyRocket.h"
-
+#include "NiagaraFunctionLibrary.h"
 
 
 // CDO Sets default values

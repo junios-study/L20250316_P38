@@ -8,8 +8,10 @@ public class L20250316_P38Target : TargetRules
 	public L20250316_P38Target(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Game;
-		DefaultBuildSettings = BuildSettingsVersion.V6;
+		DefaultBuildSettings = BuildSettingsVersion.Latest;
+        IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
 
-		ExtraModuleNames.AddRange( new string[] { "L20250316_P38" } );
+
+        ExtraModuleNames.AddRange( new string[] { "L20250316_P38" } );
 	}
 }

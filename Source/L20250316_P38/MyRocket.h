@@ -10,6 +10,7 @@
 class UBoxComponent;
 class UProjectileMovementComponent;
 class UStaticMeshComponent;
+class UNiagaraSystem;
 
 UCLASS()
 class L20250316_P38_API AMyRocket : public AActor
@@ -36,4 +37,13 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UProjectileMovementComponent> Movement;
+
+	UFUNCTION()
+	void ProcessActorBeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	TObjectPtr<UNiagaraSystem> ExplosionTemplate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	TObjectPtr<USoundBase> ExplosionSound;
 };

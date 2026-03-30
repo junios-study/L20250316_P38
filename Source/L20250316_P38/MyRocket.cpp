@@ -6,8 +6,10 @@
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h" //important
+#include "NiagaraFunctionLibrary.h"
 
 // Sets default values
+//CDO ÃÊ±âÈ­
 AMyRocket::AMyRocket()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -37,6 +39,8 @@ AMyRocket::AMyRocket()
 void AMyRocket::BeginPlay()
 {
 	Super::BeginPlay();
+
+	OnActorBeginOverlap.AddDynamic(this, &AMyRocket::ProcessActorBeginOverlap);
 	
 }
 
@@ -45,5 +49,21 @@ void AMyRocket::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AMyRocket::ProcessActorBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
+{
+	if (OtherActor->ActorHasTag(FName(TEXT("Player"))) == false)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+			GetWorld(),
+			ExplosionTemplate,
+			GetActorLocation()
+		);
+
+		UGameplayStatics::SpawnSound2D(GetWorld(),
+			ExplosionSound
+		);
+	}
 }
 
