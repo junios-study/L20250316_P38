@@ -6,6 +6,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "InputAction.h"
+#include "EnhancedInputComponent.h"
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -45,5 +47,15 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+
+	if (EIC)
+	{
+		EIC->BindAction(IA_TPSMove, ETriggerEvent::Triggered, this, &ATPSPlayer::Move);
+	}
 }
 
+void ATPSPlayer::Move(const FInputActionValue& Value)
+{
+
+}
