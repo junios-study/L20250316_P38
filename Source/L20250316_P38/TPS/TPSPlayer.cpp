@@ -9,6 +9,7 @@
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "WeaponBase.h"
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -22,6 +23,9 @@ ATPSPlayer::ATPSPlayer()
 	FollorCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollorCamera"));
 	FollorCamera->SetupAttachment(CameraBoom);
 
+	Weapon = CreateDefaultSubobject<UChildActorComponent>(TEXT("Weapon"));
+	Weapon->SetupAttachment(GetMesh());
+
 	GetMesh()->SetRelativeLocationAndRotation(
 		FVector(0, 0, -GetCapsuleComponent()->GetScaledCapsuleHalfHeight()),
 		FRotator(0, -90.0f, 0)
@@ -34,6 +38,8 @@ void ATPSPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	
+
+	EquipItem(DefalutWeapon);
 }
 
 // Called every frame
@@ -94,4 +100,24 @@ void ATPSPlayer::Zoom(const FInputActionValue& Value)
 
 	UKismetMathLibrary::Clamp(CameraBoom->TargetArmLength, 30.0f, 600.0f);
 
+}
+
+void ATPSPlayer::EquipItem(TSubclassOf<AWeaponBase> WeaponTemplate)
+{
+	Weapon->SetChildActorClass(WeaponTemplate);
+
+	AWeaponBase* ChildWeapon = Cast<AWeaponBase>(Weapon->GetChildActor());
+	if (ChildWeapon)
+	{
+		switch (ChildWeapon->WeaponType)
+		{
+			case EWeaponState::Pistol:
+			{
+				ChildWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, ChildWeapon->SocketName);
+				ChildWeapon->SetOwner(this);
+				CurrentWeapon = ChildWeapon->WeaponType;
+				break;
+			}
+		}
+	}
 }

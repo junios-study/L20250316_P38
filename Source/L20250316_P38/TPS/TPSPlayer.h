@@ -11,6 +11,7 @@
 class UCameraComponent;
 class USpringArmComponent;
 class UInputAction;
+class AWeaponBase;
 
 UENUM(BlueprintType)
 enum class EWeaponState : uint8
@@ -56,6 +57,11 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<USpringArmComponent> CameraBoom;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<UChildActorComponent> Weapon;
+
+
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> IA_TPSMove;
@@ -73,4 +79,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	EWeaponState CurrentWeapon;
+
+
+	UFUNCTION(BlueprintCallable)
+	void EquipItem(TSubclassOf<AWeaponBase> WeaponTemplate);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	TSubclassOf<class AWeaponBase> DefalutWeapon;
+
 };
