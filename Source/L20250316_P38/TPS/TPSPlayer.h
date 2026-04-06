@@ -49,6 +49,17 @@ public:
 
 	void Zoom(const FInputActionValue& Value);
 
+	void Fire();
+
+	void StartFire();
+
+	void StopFire();
+
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
+	uint8 bIsFire : 1 = false;
+
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<UCameraComponent> FollorCamera;
@@ -75,6 +86,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> IA_TPSZoom;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> IA_TPSFire;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")

@@ -37,5 +37,4 @@ void ATPSHUD::DrawHUD()
 	//세로선 두개
 	Draw2DLine(CenterX, CenterY - DrawSize - Gap, CenterX, CenterY - Gap, FColor::Green);
 	Draw2DLine(CenterX, CenterY + Gap, CenterX, CenterY + DrawSize + Gap, FColor::Green);
-
 }

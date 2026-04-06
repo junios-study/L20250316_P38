@@ -10,6 +10,7 @@
 #include "EnhancedInputComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "WeaponBase.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -67,6 +68,8 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 		EIC->BindAction(IA_TPSLook, ETriggerEvent::Triggered, this, &ATPSPlayer::Look);
 
 		EIC->BindAction(IA_TPSZoom, ETriggerEvent::Triggered, this, &ATPSPlayer::Zoom);
+
+		EIC->BindAction(IA_TPSFire, ETriggerEvent::Triggered, this, &ATPSPlayer::Fire);
 	}
 }
 
@@ -131,4 +134,61 @@ void ATPSPlayer::EquipItem(TSubclassOf<AWeaponBase> WeaponTemplate)
 			}
 		}
 	}
+}
+
+void ATPSPlayer::Fire()
+{
+
+	FVector StartTrace = FollorCamera->GetComponentLocation();
+	FVector EndTrace;
+
+	APlayerController* PC = Cast<APlayerController>(GetController());
+	if (PC)
+	{
+		int32 ScreenSizeX = 0;
+		int32 ScreenSizeY = 0; 
+		FVector WorldLocation;
+		FVector WorldDirection;
+
+		PC->GetViewportSize(ScreenSizeX, ScreenSizeY);
+		PC->DeprojectScreenPositionToWorld(ScreenSizeX / 2, ScreenSizeY / 2, WorldLocation, WorldDirection);
+
+		EndTrace = StartTrace + (WorldDirection * 100000.f);
+
+		TArray<TEnumAsByte<EObjectTypeQuery>> Objects;
+		Objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
+		Objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldStatic));
+		Objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldDynamic));
+
+		TArray<AActor*> IgnoreActors;
+		IgnoreActors.Add(this);
+
+		FHitResult OutHit;
+
+		bool Result = UKismetSystemLibrary::LineTraceSingleForObjects(
+			GetWorld(),
+			StartTrace,
+			EndTrace,
+			Objects,
+			true,
+			IgnoreActors,
+			EDrawDebugTrace::ForDuration,
+			OutHit,
+			true,
+			FLinearColor::Red,
+			FLinearColor::Green,
+			5.0f);
+		if (Result)
+		{
+
+		}
+	}
+}
+
+void ATPSPlayer::StartFire()
+{
+}
+
+void ATPSPlayer::StopFire()
+{
 }
