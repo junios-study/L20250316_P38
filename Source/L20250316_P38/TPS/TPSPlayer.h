@@ -12,6 +12,15 @@ class UCameraComponent;
 class USpringArmComponent;
 class UInputAction;
 
+UENUM(BlueprintType)
+enum class EWeaponState : uint8
+{
+	Unarmed = 0 UMETA(Display="Unarmed"),
+	Pistol = 10 UMETA(Display = "Pistol"),
+	Rifle = 20 UMETA(Display = "Rifle"),
+	GrenadeLauncher = 30 UMETA(Display = "GrenadeLauncher"),
+};
+
 
 UCLASS()
 class L20250316_P38_API ATPSPlayer : public ACharacter
@@ -60,4 +69,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> IA_TPSZoom;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	EWeaponState CurrentWeapon;
 };
