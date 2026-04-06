@@ -99,11 +99,12 @@ void ATPSPlayer::Zoom(const FInputActionValue& Value)
 	CameraBoom->TargetArmLength += (Zoom*30.f);
 
 	UKismetMathLibrary::Clamp(CameraBoom->TargetArmLength, 30.0f, 600.0f);
-
 }
 
 void ATPSPlayer::EquipItem(TSubclassOf<AWeaponBase> WeaponTemplate)
 {
+	//WeaponTemplate 클래스 이름을 의미함, 리플렉션에서 클래스 이름으로 생성 하는 로직
+	//단 CPP은 클래스 이름이 없어서 CDO가지고 생성함
 	Weapon->SetChildActorClass(WeaponTemplate);
 
 	AWeaponBase* ChildWeapon = Cast<AWeaponBase>(Weapon->GetChildActor());
@@ -112,6 +113,16 @@ void ATPSPlayer::EquipItem(TSubclassOf<AWeaponBase> WeaponTemplate)
 		switch (ChildWeapon->WeaponType)
 		{
 			case EWeaponState::Pistol:
+			{
+				ChildWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, ChildWeapon->SocketName);
+				ChildWeapon->SetOwner(this);
+				CurrentWeapon = ChildWeapon->WeaponType;
+				break;
+			}
+		}
+		switch (ChildWeapon->WeaponType)
+		{
+			case EWeaponState::Rifle:
 			{
 				ChildWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, ChildWeapon->SocketName);
 				ChildWeapon->SetOwner(this);

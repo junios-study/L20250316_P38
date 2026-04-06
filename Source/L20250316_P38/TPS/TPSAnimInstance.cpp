@@ -17,5 +17,8 @@ void UTPSAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		Speed = Player->GetCharacterMovement()->Velocity.Size2D();
 		Direction = UKismetAnimationLibrary::CalculateDirection(Player->GetCharacterMovement()->Velocity, Player->GetActorRotation());
 		CurrentWeapon = Player->CurrentWeapon;
+
+		AimYaw = Player->GetBaseAimRotation().Yaw;
+		AimPitch = Player->GetBaseAimRotation().Pitch;
 	}
 }
