@@ -73,3 +73,4 @@ Plugins/**/Intermediate/*
 # Cache files for the editor to use
 DerivedDataCache/*
 UpgradeLog.htm
+/Source/L20250316_P38/TPS/ZombieAIController.h

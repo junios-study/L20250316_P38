@@ -12,6 +12,7 @@ class UCameraComponent;
 class USpringArmComponent;
 class UInputAction;
 class AWeaponBase;
+class UAIPerceptionStimuliSourceComponent;
 
 UENUM(BlueprintType)
 enum class EWeaponState : uint8
@@ -73,6 +74,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UChildActorComponent> Weapon;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<UAIPerceptionStimuliSourceComponent> StimuliSoruce;
 
 
 

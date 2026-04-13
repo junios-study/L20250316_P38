@@ -15,6 +15,7 @@
 #include "Components/DecalComponent.h"
 #include "BulletDamageType.h"
 #include "WeaponBase.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -35,6 +36,8 @@ ATPSPlayer::ATPSPlayer()
 		FVector(0, 0, -GetCapsuleComponent()->GetScaledCapsuleHalfHeight()),
 		FRotator(0, -90.0f, 0)
 		);
+
+	StimuliSoruce = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("StimuliSoruce"));
 
 }
 

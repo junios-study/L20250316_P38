@@ -2,9 +2,12 @@
 
 
 #include "ZombieAIController.h"
+#include "Perception/AIPerceptionComponent.h"
 
 AZombieAIController::AZombieAIController()
 {
+	Perception = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("Perception"));
+
 }
 
 void AZombieAIController::OnPossess(APawn* InPawn)
