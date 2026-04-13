@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/DamageType.h"
-#include "BullteDamageType.generated.h"
+#include "BulletDamageType.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class L20250316_P38_API UBullteDamageType : public UDamageType
+class L20250316_P38_API UBulletDamageType : public UDamageType
 {
 	GENERATED_BODY()
 	

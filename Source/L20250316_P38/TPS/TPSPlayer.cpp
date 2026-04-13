@@ -13,7 +13,8 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/DecalComponent.h"
-#include "BullteDamageType.h"
+#include "BulletDamageType.h"
+#include "WeaponBase.h"
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -150,92 +151,12 @@ float ATPSPlayer::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent
 
 void ATPSPlayer::Fire()
 {
-
-	FVector StartTrace = FollorCamera->GetComponentLocation();
-	FVector EndTrace;
-
-	APlayerController* PC = Cast<APlayerController>(GetController());
-	if (PC)
+	AWeaponBase* ChildWeapon = Cast<AWeaponBase>(Weapon->GetChildActor());
+	if (ChildWeapon)
 	{
-		int32 ScreenSizeX = 0;
-		int32 ScreenSizeY = 0; 
-		FVector WorldLocation;
-		FVector WorldDirection;
-
-		PC->GetViewportSize(ScreenSizeX, ScreenSizeY);
-		PC->DeprojectScreenPositionToWorld(ScreenSizeX / 2, ScreenSizeY / 2, WorldLocation, WorldDirection);
-
-		EndTrace = StartTrace + (WorldDirection * 100000.f);
-
-		TArray<TEnumAsByte<EObjectTypeQuery>> Objects;
-		Objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
-		Objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldStatic));
-		Objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldDynamic));
-
-		TArray<AActor*> IgnoreActors;
-		IgnoreActors.Add(this);
-
-		FHitResult OutHit;
-
-		bool Result = UKismetSystemLibrary::LineTraceSingleForObjects(
-			GetWorld(),
-			StartTrace,
-			EndTrace,
-			Objects,
-			true,
-			IgnoreActors,
-			EDrawDebugTrace::ForDuration,
-			OutHit,
-			true,
-			FLinearColor::Red,
-			FLinearColor::Green,
-			5.0f);
-		if (Result)
-		{
-			UDecalComponent* Decal = UGameplayStatics::SpawnDecalAtLocation(GetWorld(),
-				DecalTemplate,
-				FVector(5.f, 5.f, 5.f),
-				OutHit.ImpactPoint,
-				OutHit.ImpactNormal.Rotation(),
-				5.f);
-
-			if (Decal)
-			{
-				Decal->SetFadeScreenSize(0.005f);
-			}
-
-			UGameplayStatics::ApplyDamage(
-				OutHit.GetActor(),
-				10.0f,
-				GetController(),
-				this,
-				UBullteDamageType::StaticClass()
-			);
-		}
-
-		UGameplayStatics::SpawnEmitterAtLocation(
-			GetWorld(),
-			MuzzleFlashEffect,
-			Weapon->GetSocketLocation(TEXT("Muzzle")),
-			Weapon->GetSocketRotation(TEXT("Muzzle"))
-		);
-
-
-		UGameplayStatics::SpawnEmitterAtLocation(
-			GetWorld(),
-			HitEffect,
-			Weapon->GetSocketLocation(TEXT("Muzzle")),
-			Weapon->GetSocketRotation(TEXT("Muzzle"))
-		);
-
-		//UGameplayStatics::SpawnSoundAtLocation(
-		//	GetWorld(),
-		//	FireSound,
-		//	Weapon->GetSocketLocation(TEXT("Muzzle")),
-		//	Weapon->GetSocketRotation(TEXT("Muzzle"))
-		//);
-
+		ChildWeapon->Fire();
 	}
+	
 }
 
 void ATPSPlayer::StartFire()
