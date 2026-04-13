@@ -11,6 +11,8 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "WeaponBase.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "Components/DecalComponent.h"
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -180,6 +182,18 @@ void ATPSPlayer::Fire()
 			5.0f);
 		if (Result)
 		{
+			UDecalComponent* Decal = UGameplayStatics::SpawnDecalAtLocation(GetWorld(),
+				DecalTemplate,
+				FVector(5.f, 5.f, 5.f),
+				OutHit.ImpactPoint,
+				OutHit.ImpactNormal.Rotation(),
+				5.f);
+
+			if (Decal)
+			{
+				Decal->SetFadeScreenSize(0.005f);
+			}
+
 
 		}
 	}

@@ -101,4 +101,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	TSubclassOf<class AWeaponBase> DefalutWeapon;
 
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	TObjectPtr<UMaterialInterface> DecalTemplate;
+
 };
