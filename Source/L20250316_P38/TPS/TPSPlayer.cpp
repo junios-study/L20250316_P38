@@ -73,7 +73,13 @@ void ATPSPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 		EIC->BindAction(IA_TPSZoom, ETriggerEvent::Triggered, this, &ATPSPlayer::Zoom);
 
-		EIC->BindAction(IA_TPSFire, ETriggerEvent::Triggered, this, &ATPSPlayer::Fire);
+		EIC->BindAction(IA_TPSFire, ETriggerEvent::Triggered, this, &ATPSPlayer::StartFire);
+
+		EIC->BindAction(IA_TPSFire, ETriggerEvent::Completed, this, &ATPSPlayer::StopFire);
+		EIC->BindAction(IA_TPSFire, ETriggerEvent::Canceled, this, &ATPSPlayer::StopFire);
+
+		EIC->BindAction(IA_Reload, ETriggerEvent::Triggered, this, &ATPSPlayer::Reload);
+
 	}
 }
 
@@ -126,9 +132,7 @@ void ATPSPlayer::EquipItem(TSubclassOf<AWeaponBase> WeaponTemplate)
 				CurrentWeapon = ChildWeapon->WeaponType;
 				break;
 			}
-		}
-		switch (ChildWeapon->WeaponType)
-		{
+
 			case EWeaponState::Rifle:
 			{
 				ChildWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, ChildWeapon->SocketName);
@@ -144,9 +148,10 @@ float ATPSPlayer::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent
 {
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
-	UE_LOG(LogTemp, Warning, TEXT("Damage %f"), DamageAmount);
 
 	FString Temp = FString::Printf(TEXT("Hit0%d_Start"), FMath::RandRange(1, 3));
+
+	UE_LOG(LogTemp, Warning, TEXT("Damage %s"), *Temp);
 	
 	PlayAnimMontage(HitAnimaion,
 		1.0f,
@@ -168,8 +173,42 @@ void ATPSPlayer::Fire()
 
 void ATPSPlayer::StartFire()
 {
+	bIsFire = true;
+	Fire();
 }
 
 void ATPSPlayer::StopFire()
 {
+	bIsFire = false;
+}
+
+
+void ATPSPlayer::Reload()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Reload"));
+
+
+	AWeaponBase* ChildWeapon = Cast<AWeaponBase>(Weapon->GetChildActor());
+	if (ChildWeapon)
+	{
+		switch (ChildWeapon->WeaponType)
+		{
+			case EWeaponState::Pistol:
+			{
+				PlayAnimMontage(ReloadAnimation,
+					1.0f,
+					FName("Pistol")
+				);
+				break;
+			}
+			case EWeaponState::Rifle:
+			{
+				PlayAnimMontage(ReloadAnimation,
+					1.0f,
+					FName("Rifle")
+				);
+				break;
+			}
+		}
+	}
 }

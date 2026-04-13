@@ -55,6 +55,8 @@ public:
 
 	void StopFire();
 
+	void Reload();
+
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
@@ -90,6 +92,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> IA_TPSFire;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> IA_Reload;
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	EWeaponState CurrentWeapon;
@@ -107,7 +112,7 @@ public:
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
-	TObjectPtr<UAnimMontage> ReloadAnimaion;
+	TObjectPtr<UAnimMontage> ReloadAnimation;
 	
 
 

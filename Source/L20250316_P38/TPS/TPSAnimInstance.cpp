@@ -20,5 +20,12 @@ void UTPSAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 		AimYaw = Player->GetBaseAimRotation().Yaw;
 		AimPitch = Player->GetBaseAimRotation().Pitch;
+
+		bIsFire = Player->bIsFire;
 	}
+}
+
+void UTPSAnimInstance::AnimNotify_SkeletonNotifyReload()
+{
+	UE_LOG(LogTemp, Warning, TEXT("AnimNotify_SkeletonNotifyReload"));
 }

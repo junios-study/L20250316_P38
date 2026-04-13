@@ -35,4 +35,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
 	float AimPitch = 0;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
+	uint8 bIsFire : 1 = false;
+	
+	UFUNCTION()
+	void AnimNotify_SkeletonNotifyReload();
+
 };
