@@ -13,6 +13,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/DecalComponent.h"
+#include "BullteDamageType.h"
 
 // Sets default values
 ATPSPlayer::ATPSPlayer()
@@ -138,6 +139,15 @@ void ATPSPlayer::EquipItem(TSubclassOf<AWeaponBase> WeaponTemplate)
 	}
 }
 
+float ATPSPlayer::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	UE_LOG(LogTemp, Warning, TEXT("Damage %f"), DamageAmount);
+
+	return DamageAmount;
+}
+
 void ATPSPlayer::Fire()
 {
 
@@ -158,7 +168,7 @@ void ATPSPlayer::Fire()
 		EndTrace = StartTrace + (WorldDirection * 100000.f);
 
 		TArray<TEnumAsByte<EObjectTypeQuery>> Objects;
-		Objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
+		Objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
 		Objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldStatic));
 		Objects.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldDynamic));
 
@@ -194,8 +204,37 @@ void ATPSPlayer::Fire()
 				Decal->SetFadeScreenSize(0.005f);
 			}
 
-
+			UGameplayStatics::ApplyDamage(
+				OutHit.GetActor(),
+				10.0f,
+				GetController(),
+				this,
+				UBullteDamageType::StaticClass()
+			);
 		}
+
+		UGameplayStatics::SpawnEmitterAtLocation(
+			GetWorld(),
+			MuzzleFlashEffect,
+			Weapon->GetSocketLocation(TEXT("Muzzle")),
+			Weapon->GetSocketRotation(TEXT("Muzzle"))
+		);
+
+
+		UGameplayStatics::SpawnEmitterAtLocation(
+			GetWorld(),
+			HitEffect,
+			Weapon->GetSocketLocation(TEXT("Muzzle")),
+			Weapon->GetSocketRotation(TEXT("Muzzle"))
+		);
+
+		//UGameplayStatics::SpawnSoundAtLocation(
+		//	GetWorld(),
+		//	FireSound,
+		//	Weapon->GetSocketLocation(TEXT("Muzzle")),
+		//	Weapon->GetSocketRotation(TEXT("Muzzle"))
+		//);
+
 	}
 }
 
