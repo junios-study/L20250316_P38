@@ -146,6 +146,13 @@ float ATPSPlayer::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent
 
 	UE_LOG(LogTemp, Warning, TEXT("Damage %f"), DamageAmount);
 
+	FString Temp = FString::Printf(TEXT("Hit0%d_Start"), FMath::RandRange(1, 3));
+	
+	PlayAnimMontage(HitAnimaion,
+		1.0f,
+		FName(Temp)
+	);
+
 	return DamageAmount;
 }
 
