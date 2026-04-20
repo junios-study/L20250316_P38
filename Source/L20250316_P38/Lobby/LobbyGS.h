@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameStateBase.h"
-#include "LobbGS.generated.h"
+#include "LobbyGS.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class L20250316_P38_API ALobbGS : public AGameStateBase
+class L20250316_P38_API ALobbyGS : public AGameStateBase
 {
 	GENERATED_BODY()
 	
