@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "GenericTeamAgentInterface.h"
 
 #include "TPSPlayer.generated.h"
 
@@ -25,7 +26,7 @@ enum class EWeaponState : uint8
 
 
 UCLASS()
-class L20250316_P38_API ATPSPlayer : public ACharacter
+class L20250316_P38_API ATPSPlayer : public ACharacter, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
@@ -120,5 +121,20 @@ public:
 
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	FGenericTeamId MyTeamID;
+
+	/** Assigns Team Agent to given TeamID */
+	virtual void SetGenericTeamId(const FGenericTeamId& TeamID) override
+	{
+		MyTeamID = TeamID;
+	}
+
+	/** Retrieve team identifier in form of FGenericTeamId */
+	virtual FGenericTeamId GetGenericTeamId() const override 
+	{ 
+		return MyTeamID;
+	}
 	
 };
