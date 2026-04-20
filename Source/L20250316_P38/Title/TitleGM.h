@@ -22,6 +22,7 @@ public:
 
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 
+	virtual void StartPlay() override;
 
 
 

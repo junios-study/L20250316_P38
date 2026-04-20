@@ -13,5 +13,7 @@ UCLASS()
 class L20250316_P38_API ATitlePC : public APlayerController
 {
 	GENERATED_BODY()
-	
+public:
+
+	virtual void BeginPlay() override;
 };
