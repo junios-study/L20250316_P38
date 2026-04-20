@@ -39,7 +39,7 @@ ATPSPlayer::ATPSPlayer()
 
 	StimuliSoruce = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("StimuliSoruce"));
 
-	SetGenericTeamId(2);
+	SetGenericTeamId(7);
 }
 
 // Called when the game starts or when spawned

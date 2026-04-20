@@ -43,4 +43,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
 	uint8 HP = 100;
+
+
+	UFUNCTION(BlueprintCallable)
+	void SetMaxSpeed(float NewMaxSpeed);
 };

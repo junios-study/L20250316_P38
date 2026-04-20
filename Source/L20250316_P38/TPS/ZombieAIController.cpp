@@ -4,6 +4,10 @@
 #include "ZombieAIController.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
+#include "Perception/AISenseConfig_Hearing.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "TPSPlayer.h"
+#include "Zombie.h"
 
 AZombieAIController::AZombieAIController()
 {
@@ -30,7 +34,14 @@ void AZombieAIController::OnPossess(APawn* InPawn)
 		RunBehaviorTree(RunBTAsset);
 	}
 
-	SetGenericTeamId(7);
+	SetState(EZombieState::Idle);
+	AZombie* Zombie = Cast<AZombie>(GetPawn());
+	if (Zombie)
+	{
+		Zombie->SetMaxSpeed(80.0f);
+	}
+
+	SetGenericTeamId(2);
 
 	Perception->OnTargetPerceptionUpdated.AddDynamic(this, &AZombieAIController::ProcessTargetUpdated);
 
@@ -44,10 +55,64 @@ void AZombieAIController::OnUnPossess()
 
 void AZombieAIController::ProcessTargetUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Perception %s"), *Actor->GetName());
+	//UE_LOG(LogTemp, Warning, TEXT("Perception %s"), *Actor->GetName());
+
+	//矫具 贸府
+	if (Stimulus.Type == UAISense::GetSenseID<UAISenseConfig_Sight>())
+	{
+		if (Stimulus.WasSuccessfullySensed()) //Seed
+		{
+			ATPSPlayer* Player = Cast<ATPSPlayer>(Actor);
+			AZombie* Zombie = Cast<AZombie>(GetPawn());
+			if (Player && Zombie)
+			{
+				if (Zombie->CurrentState == EZombieState::Death)
+				{
+					return;
+				}
+
+				Blackboard->SetValueAsObject(TEXT("Player"), Player);
+				SetState(EZombieState::Chase);
+				Zombie->SetMaxSpeed(400.0f);
+			}
+		}
+		else //dont seen
+		{
+			ATPSPlayer* Player = Cast<ATPSPlayer>(Actor);
+			AZombie* Zombie = Cast<AZombie>(GetPawn());
+			if (Player && Zombie)
+			{
+				if (Zombie->CurrentState == EZombieState::Death)
+				{
+					return;
+				}
+
+				Blackboard->SetValueAsObject(TEXT("Player"), nullptr);
+				SetState(EZombieState::Idle);
+				Zombie->SetMaxSpeed(80.0f);
+			}
+		}
+	}
+
+	//佃扁 贸府
+	if (Stimulus.Type == UAISense::GetSenseID<UAISenseConfig_Hearing>())
+	{
+
+	}
+
 }
 
 void AZombieAIController::ProcessTargetForgotten(AActor* Actor)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Forgotten %s"), *Actor->GetName());
+}
+
+void AZombieAIController::SetState(EZombieState NewState)
+{
+	Blackboard->SetValueAsEnum(TEXT("CurrentState"), (uint8)NewState);
+	AZombie* Zombie = Cast<AZombie>(GetPawn());
+	if (Zombie)
+	{
+		Zombie->CurrentState = NewState;
+	}
 }

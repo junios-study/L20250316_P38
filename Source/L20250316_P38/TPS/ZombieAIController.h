@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "Zombie.h"
 #include "ZombieAIController.generated.h"
 
 
@@ -33,4 +34,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	TObjectPtr<UBehaviorTree> RunBTAsset;
 
+
+	UFUNCTION()
+	void ProcessTargetUpdated(AActor* Actor, FAIStimulus Stimulus);
+
+	UFUNCTION()
+	void ProcessTargetForgotten(AActor* Actor);
+
+
+	UFUNCTION(BlueprintCallable)
+	void SetState(EZombieState NewState);
 };
