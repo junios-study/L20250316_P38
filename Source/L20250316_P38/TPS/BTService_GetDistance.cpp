@@ -26,24 +26,24 @@ void UBTService_GetDistance::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* 
 
 		float Distance = FVector::Dist2D(ZombieLocation, PlayerLocation);
 
-		switch (TargetCondition)
-		{
-			case ECondition::GraterThan:
-			{
-				if (Distance > TargetDistance)
-				{
-					ZombieAIC->SetState(TargetState);
-				}
-				break;
-			}
-			case ECondition::LessThan:
-			{
-				if (Distance < TargetDistance)
-				{
-					ZombieAIC->SetState(TargetState);
-				}
-				break;
-			}
-		}
+		//switch (TargetCondition)
+		//{
+		//	case ECondition::GraterThan:
+		//	{
+		//		if (Distance > TargetDistance)
+		//		{
+		//			ZombieAIC->SetState(TargetState);
+		//		}
+		//		break;
+		//	}
+		//	case ECondition::LessThan:
+		//	{
+		//		if (Distance < TargetDistance)
+		//		{
+		//			ZombieAIC->SetState(TargetState);
+		//		}
+		//		break;
+		//	}
+		//}
 	}
 }
