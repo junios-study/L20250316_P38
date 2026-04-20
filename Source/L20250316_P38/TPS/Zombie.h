@@ -6,6 +6,9 @@
 #include "GameFramework/Character.h"
 #include "Zombie.generated.h"
 
+//DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE_OneParam(FZombieHPBarSignature, AZombie, OnChangeHPBar, const float, InPercent);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FZombieHPBarSignature, const float, InPercent);
 
 UENUM(BlueprintType)
 enum class EZombieState : uint8
@@ -42,9 +45,17 @@ public:
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
-	uint8 HP = 100;
+	int64 HP = 100;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stat")
+	int64 MaxHP = 100;
 
 
 	UFUNCTION(BlueprintCallable)
 	void SetMaxSpeed(float NewMaxSpeed);
+
+	UPROPERTY(BlueprintAssignable)
+	FZombieHPBarSignature OnChangeHPBar;
+
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 };

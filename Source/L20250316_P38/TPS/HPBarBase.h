@@ -18,7 +18,13 @@ class L20250316_P38_API UHPBarBase : public UUserWidget
 public:
 	virtual void NativeConstruct() override;
 
+	virtual void NativeOnInitialized() override;
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget", meta = (WidgetBind))
 	TObjectPtr<UProgressBar> HPBar;
+
+	UFUNCTION(BlueprintCallable)
+	void SetHPBar(const float InPercent);
 
 };

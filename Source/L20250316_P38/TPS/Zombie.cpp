@@ -4,6 +4,9 @@
 #include "Zombie.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/WidgetComponent.h"
+#include "HPBarBase.h"
+#include "ZombieAIController.h"
 
 
 // Sets default values
@@ -22,6 +25,15 @@ AZombie::AZombie()
 void AZombie::BeginPlay()
 {
 	Super::BeginPlay();
+
+	UWidgetComponent* Widget = Cast<UWidgetComponent>(GetComponentByClass(UWidgetComponent::StaticClass()));
+
+	UHPBarBase* HPBar = Cast<UHPBarBase>(Widget->GetWidget());
+	if (Widget && HPBar)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("HP Bar Delegate bind"));
+		OnChangeHPBar.AddDynamic(HPBar, &UHPBarBase::SetHPBar);
+	}
 	
 }
 
@@ -42,6 +54,40 @@ void AZombie::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AZombie::SetMaxSpeed(float NewMaxSpeed)
 {
 	GetCharacterMovement()->MaxWalkSpeed = NewMaxSpeed;
+}
+
+float AZombie::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float Damage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	HP -= DamageAmount;
+
+	UE_LOG(LogTemp, Warning, TEXT("HP %d"), HP);
+
+	if (HP <= 0)
+	{
+		AZombieAIController* ZombieAIC = Cast<AZombieAIController>(GetController());
+		if (ZombieAIC)
+		{
+			ZombieAIC->SetState(EZombieState::Death);
+			CurrentState = EZombieState::Death;
+			SetMaxSpeed(0);
+			GetCharacterMovement()->SetMovementMode(
+				EMovementMode::MOVE_None
+			);
+		}
+	}
+
+	HP = FMath::Clamp(HP, 0, 100);
+
+	float Percent = (float)HP / (float)MaxHP;
+
+	Percent = FMath::Clamp(Percent, 0, 1.f);
+
+
+	OnChangeHPBar.Broadcast(Percent);
+
+	return DamageAmount;
 }
 
 

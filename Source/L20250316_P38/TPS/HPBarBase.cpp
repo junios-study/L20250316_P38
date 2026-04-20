@@ -7,6 +7,20 @@
 void UHPBarBase::NativeConstruct()
 {
 	Super::NativeConstruct();
+}
 
-	HPBar->SetPercent(1.0f);
+void UHPBarBase::NativeOnInitialized()
+{
+	Super::NativeOnInitialized();
+
+	
+	//UE_LOG(LogTemp, Warning, TEXT("HPBar Owner : %s"), ->GetName());
+}
+
+void UHPBarBase::SetHPBar(float InPercent)
+{
+	if (HPBar)
+	{
+		HPBar->SetPercent(InPercent);
+	}
 }
