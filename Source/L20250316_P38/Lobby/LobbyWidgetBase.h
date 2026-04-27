@@ -47,7 +47,7 @@ public:
 	void ProcessStart();
 
 	UFUNCTION(BlueprintCallable)
-	void ProceeSend();
+	void ProcessSend();
 
 	UFUNCTION()
 	void Start();
@@ -57,5 +57,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void UpdateConnectionCount(int32 InConnectionCount);
+
+	void ShowStartButton();
 };
 

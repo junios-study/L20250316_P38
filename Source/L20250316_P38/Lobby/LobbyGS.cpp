@@ -12,6 +12,8 @@ void ALobbyGS::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetime
 	DOREPLIFETIME(ALobbyGS, ConnectionCount);
 }
 
+//서버 값이 바뀌었을때 client에서 자동 호출, 단 서버에서 호출 안됨
 void ALobbyGS::OnRep_ConnectionCount()
 {
+	OnChangeConnectionCount.Broadcast(ConnectionCount);
 }

@@ -13,5 +13,14 @@ UCLASS()
 class L20250316_P38_API ALobbyGM : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+public:
+
+	virtual void BeginPlay() override;
+
+	virtual void PostLogin(APlayerController* NewPlayer) override;
+
+	FTimerHandle LeftTimeHandle;
+
+	void StopTimer();
+
 };

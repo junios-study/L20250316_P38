@@ -6,6 +6,8 @@
 #include "GameFramework/GameStateBase.h"
 #include "LobbyGS.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnChangeConnectionCount, const int32, InConnectionCount);
+
 /**
  * 
  */
@@ -29,4 +31,7 @@ public:
 	/// </summary>
 	UFUNCTION()
 	void OnRep_ConnectionCount();
+
+	UPROPERTY()
+	FOnChangeConnectionCount OnChangeConnectionCount;
 };
