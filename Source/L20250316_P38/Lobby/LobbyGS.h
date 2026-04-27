@@ -15,6 +15,7 @@ class L20250316_P38_API ALobbyGS : public AGameStateBase
 	GENERATED_BODY()
 
 public:
+	//서버에서 바꾼다. 클라이언트 뷰어(동영상 플레이어)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data", Replicated)
 	int32 LeftTime = 60;
 
