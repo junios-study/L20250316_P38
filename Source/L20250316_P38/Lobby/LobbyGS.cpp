@@ -2,4 +2,16 @@
 
 
 #include "LobbyGS.h"
+#include "Net/UnrealNetwork.h"
 
+void ALobbyGS::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ALobbyGS, LeftTime);
+	DOREPLIFETIME(ALobbyGS, ConnectionCount);
+}
+
+void ALobbyGS::OnRep_ConnectionCount()
+{
+}
