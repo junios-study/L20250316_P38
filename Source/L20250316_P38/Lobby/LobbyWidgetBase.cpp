@@ -55,7 +55,7 @@ void ULobbyWidgetBase::Start()
 void ULobbyWidgetBase::UpdateLeftTime(int32 InLeftTime)
 {
 	FString Temp = FString::Printf(TEXT("%d초 남음"), InLeftTime);
-	ConnectionCount->SetText(FText::FromString(Temp));
+	LeftTime->SetText(FText::FromString(Temp));
 }
 
 void ULobbyWidgetBase::UpdateConnectionCount(int32 InConnectionCount)

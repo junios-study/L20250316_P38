@@ -13,10 +13,11 @@ void ALobbyPC::BeginPlay()
 	if (LobbyWidgetTemplate && IsLocalPlayerController())
 	{
 		LobbyWidgetInstance = CreateWidget<ULobbyWidgetBase>(this, LobbyWidgetTemplate);
+		LobbyWidgetInstance->AddToViewport();
 
 		if (LobbyWidgetInstance && HasAuthority())
 		{
-			LobbyWidgetInstance->AddToViewport();
+			
 			LobbyWidgetInstance->ShowStartButton();
 		}
 
