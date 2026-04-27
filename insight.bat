@@ -1,0 +1,1 @@
+"C:\Program Files\Epic Games\UE_5.7\Engine\Binaries\Win64\UnrealEditor.exe" "C:\Work\L20250316_P38\L20250316_P38.uproject" -NetTrace=1 -trace=net
