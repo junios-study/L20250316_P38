@@ -23,6 +23,19 @@ void ALobbyGM::BeginPlay()
 	);
 }
 
+void ALobbyGM::StartPlay()
+{
+	Super::StartPlay();
+
+	ALobbyGS* GS = GetGameState<ALobbyGS>();
+
+	if (GS)
+	{
+		GS->ConnectionCount = GetNumPlayers();
+		GS->OnRep_ConnectionCount();
+	}
+}
+
 
 //¼­¹ö¸¸
 void ALobbyGM::PostLogin(APlayerController* NewPlayer)

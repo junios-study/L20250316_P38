@@ -17,6 +17,9 @@ public:
 
 	virtual void BeginPlay() override;
 
+	virtual void StartPlay() override;
+
+
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 
 	FTimerHandle LeftTimeHandle;

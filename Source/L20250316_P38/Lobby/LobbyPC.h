@@ -25,4 +25,16 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	TObjectPtr<ULobbyWidgetBase> LobbyWidgetInstance;
+
+	//Client -> Server(검증)
+	UFUNCTION(Server, Reliable, WithValidation)
+	void C2S_SendMessage(const FText& Message); //호출, client
+	bool C2S_SendMessage_Validate(const FText& Message); //검증
+	void C2S_SendMessage_Implementation(const FText& Message); //목적지에서 실행, Server
+
+
+	UFUNCTION(Client, Unreliable)
+	void S2C_SendMessage(const FText& Message);
+	void S2C_SendMessage_Implementation(const FText& Message); //목적지에서 실행, Server
+
 };

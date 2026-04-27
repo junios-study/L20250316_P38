@@ -17,7 +17,6 @@ void ALobbyPC::BeginPlay()
 
 		if (LobbyWidgetInstance && HasAuthority())
 		{
-			
 			LobbyWidgetInstance->ShowStartButton();
 		}
 
@@ -35,5 +34,33 @@ void ALobbyPC::Tick(float DeltaSeconds)
 	if (LobbyWidgetInstance && GS)
 	{
 		LobbyWidgetInstance->UpdateLeftTime(GS->LeftTime);
+	}
+}
+
+bool ALobbyPC::C2S_SendMessage_Validate(const FText& Message)
+{ 
+	return true;
+	//return false; // 클라이언트 종료
+}
+
+
+void ALobbyPC::C2S_SendMessage_Implementation(const FText& Message)
+{
+	//모든 PC에 메세지 보냄
+	for (FConstPlayerControllerIterator Iterator = GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator)
+	{
+		ALobbyPC* PC = Cast<ALobbyPC>(Iterator->Get());
+		if (PC)
+		{
+			PC->S2C_SendMessage(Message);
+		}
+	}
+}
+
+void ALobbyPC::S2C_SendMessage_Implementation(const FText& Message)
+{
+	if (LobbyWidgetInstance)
+	{
+		LobbyWidgetInstance->AddMessage(Message);
 	}
 }

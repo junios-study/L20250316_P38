@@ -8,6 +8,7 @@
 #include "Components/TextBlock.h"
 #include "Components/ScrollBox.h"
 #include "Kismet/GameplayStatics.h"
+#include "LobbyPC.h"
 
 void ULobbyWidgetBase::NativeOnInitialized()
 {
@@ -37,6 +38,25 @@ void ULobbyWidgetBase::NativeOnInitialized()
 
 void ULobbyWidgetBase::ProcessCommited(const FText& Text, ETextCommit::Type CommitMethod)
 {
+	switch (CommitMethod)
+	{
+		case ETextCommit::OnEnter:
+		{
+			ALobbyPC* PC = Cast<ALobbyPC>(GetOwningPlayer());
+
+			if (PC)
+			{
+				//ID, Password, GameSubSystyem에서 아이디 가져와서 넣어주면 됨
+				PC->C2S_SendMessage(Text);
+				Inputbox->SetText(FText::GetEmpty());
+			}
+		}
+		break;
+		case ETextCommit::OnCleared:
+		{
+			Inputbox->SetUserFocus(GetOwningPlayer());
+		}
+	}
 }
 
 void ULobbyWidgetBase::ProcessStart()
@@ -69,5 +89,27 @@ void ULobbyWidgetBase::ShowStartButton()
 	if (StartButton)
 	{
 		StartButton->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
+
+///서버에서 메세지 오면 추가한다.
+void ULobbyWidgetBase::AddMessage(const FText& Message)
+{
+	if (ChatScrollBox)
+	{
+		UTextBlock* NewChat = NewObject<UTextBlock>(ChatScrollBox);
+		if (NewChat)
+		{
+			NewChat->SetText(Message);
+			FSlateFontInfo FontInfo = NewChat->GetFont();
+			FontInfo.Size = 11;
+			NewChat->SetFont(FontInfo);
+
+			ChatScrollBox->AddChild(NewChat);
+			ChatScrollBox->ScrollToEnd();
+			//메모리 관리
+			//일정 갯수가 되면 삭제 하는거 넣어야 됨
+		}
 	}
 }

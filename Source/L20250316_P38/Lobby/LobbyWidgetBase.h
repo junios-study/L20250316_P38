@@ -59,5 +59,7 @@ public:
 	void UpdateConnectionCount(int32 InConnectionCount);
 
 	void ShowStartButton();
+
+	void AddMessage(const FText& Message);
 };
 
