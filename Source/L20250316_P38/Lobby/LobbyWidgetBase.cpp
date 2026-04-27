@@ -61,6 +61,11 @@ void ULobbyWidgetBase::ProcessCommited(const FText& Text, ETextCommit::Type Comm
 
 void ULobbyWidgetBase::ProcessStart()
 {
+	//바로 시작 X
+	//GM 함수 만들어서 
+	//C2S->GM 시작하게 작업
+
+	GetWorld()->ServerTravel(TEXT("Step02"));
 }
 
 void ULobbyWidgetBase::ProcessSend()
